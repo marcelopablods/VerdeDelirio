@@ -1,0 +1,173 @@
+<section class="row no-margin m-t-5">
+  <nav class="col-sm-6 col-md-4 col-lg-3 text-center"  style="border: 1px black solid;">
+        <h4 class="m-text14 m-t-5 p-b-7">
+         Administrador
+        </h4>
+
+        <ul class="list-group p-b-5">
+          <li class="list-group-item p-t-4" style="cursor: pointer;" (click)="getTipoProductos()" >
+            Categorias
+          </li>
+          <li class="list-group-item p-t-4" style="cursor: pointer;" (click)="getProductos()" >
+            Productos
+          </li>
+          <li class="list-group-item p-t-4" style="cursor: pointer;" (click)="getReporte()" >
+            Reporte
+          </li>
+        </ul>
+  </nav>
+
+  <div *ngIf="divTipoProducto" class="col-sm-6 col-md-8 col-lg-9 no-margin">
+          <div class="mandate col-md-12">
+            <h1 class="text-center">Categorías</h1>
+            <div class="cabecera b-t-r-5">
+                <!--<select class="btnHeader b-r-5 m-l-5" [(ngModel)]="selectFilterSelected">
+                  <option *ngFor="let filter of selectFilter" [ngValue]="filter">{{filter.nombre}}</option>
+                </select>-->
+                <input class="btnHeader m-l-5 b-r-5" type="text"  placeholder="Buscar">
+                <button
+                  (click)="nuevoTipoProducto()"
+                  style="border:1px solid;"
+                  class="btn btn-header m-t-5 m-l-10 m-b-15">
+                  <i class="fas fa-plus-square"></i>
+                  <b class="btn-nuevo m-r-5"> Nuevo</b>
+                </button>
+              </div>
+                  <table class="table table-sm table-bordered table-hover mt-3">
+                      <thead>
+                          <tr>
+                              <th>Id</th>
+                              <th>Nombre</th>
+                              <th>Editar</th>
+                              <th>Eliminar</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let categoria of tipoProductos">
+                              <td>{{categoria.IdTipoProducto}}</td>
+                              <td>{{categoria.Nombre}}</td>
+                              <td class="text-center">
+                                <button style="cursor:pointer; width: 38px" (click)="editarTipoProducto(categoria)"><fa name="fas fa-edit"></fa></button>
+                              </td>
+                              <td class="text-center">
+                                <button
+                                (click)="guardarTipoProducto(categoria)" style="cursor:pointer" data-toggle="modal" data-target="#modalEliminarTipoProducto"><fa name="fas fa-trash"></fa></button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+          </div>
+  </div>
+  <div *ngIf="divProducto" class="col-sm-6 col-md-8 col-lg-9 no-margin">
+      <div class="mandate col-md-12">
+        <h1 class="text-center">Productos</h1>
+        <div class="cabecera b-t-r-5">
+            <!--<select class="btnHeader b-r-5 m-l-5" [(ngModel)]="selectFilterSelected">
+              <option *ngFor="let filter of selectFilter" [ngValue]="filter">{{filter.nombre}}</option>
+            </select>-->
+            <input class="btnHeader m-l-5 b-r-5" type="text"  placeholder="Buscar">
+            <button routerLink="/productos"
+              (click)="limpiaRep()"
+              style="border:1px solid;"
+              class="btn btn-header m-t-5 m-l-10 m-b-15">
+              <i class="fas fa-plus-square"></i>
+              <b class="btn-nuevo m-r-5"> Nuevo</b>
+            </button>
+          </div>
+              <table class="table table-sm table-bordered table-hover mt-3 table-responsive-sm">
+                  <thead>
+                      <tr>
+                          <th>idProducto</th>
+                          <th>idTipoProducto</th>
+                          <th>IdUnidadMedida</th>
+                          <th>Nombre</th>
+                          <th>Precio</th>
+                          <th>Img</th>
+                          <th>Estado</th>
+                          <th></th>
+                          <th></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let product of _products">
+                          <td>{{product.IdProducto}}</td>
+                          <td>{{product.IdTipoProducto}}</td>
+                          <td>{{product.IdUnidadMedida}}</td>
+                          <td>{{product.Nombre}}</td>
+                          <td>{{product.Precio}}</td>
+                          <td>{{product.Img}}</td>
+                          <td>{{product.Estado}}</td>
+                          <td><button style="cursor:pointer; width: 38px" (click)="sendProducto(product)"><i class="fas fa-edit"></i></button></td>
+                          <td><button (click)="guardarProducto(product)" style="cursor:pointer" data-toggle="modal" data-target="#modalEliminarProducto"><i class="fas fa-trash"></i></button></td>
+                      </tr>
+                  </tbody>
+              </table>
+      </div>
+</div>
+<div *ngIf="divReporte" class="row col-sm-6 col-md-8 col-lg-9 no-margin">
+      <div class="col-md-12">
+        <h1 class="text-center">Reporte Ventas </h1>
+      </div>  
+      <div class="mandate col-md-12">
+        <table class="table table-sm table-hover mt-3">
+            <tbody>
+                <tr>
+                    <td><b>Fecha</b></td>
+                    <td><b>{{fechaReporte}}</b></td>
+                  </tr>
+                <tr>
+                  <td>Total Venta Diaria</td>
+                  <td>{{reporte.totalVentas}}</td>
+                </tr>
+                <tr>
+                  <td>Producto mas Vendido</td>
+                  <td>{{reporte.productoMasVendido}}</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+</div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalEliminarTipoProducto" tabindex="-1" role="dialog" aria-labelledby="modalEliminarTipoProductoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEliminarTipoProductoLabel">Eliminar registro</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ¿Está seguro de querer eliminar el registro?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="eliminarTipoProducto()" data-dismiss="modal">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- Modal2 -->
+<div class="modal fade" id="modalEliminarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEliminarTipoProductoLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEliminarTipoProductoLabel">Eliminar registro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Está seguro de querer eliminar el registro?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="eliminarProducto()" data-dismiss="modal">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
